@@ -35,6 +35,9 @@ public class BlackJackTableSpot : MonoBehaviour
         m_Surrender.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Surrender));
     }
     
+    /// <summary>
+    /// Refresh hand value on UI
+    /// </summary>
     private void RefreshHandValue()
     {
         m_PlayerHandValue.text = m_SpotOccupant.GetHand().GetHandValue().ToString();
