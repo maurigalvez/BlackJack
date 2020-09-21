@@ -3,38 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Used to set Card Suite
-/// </summary>
-public enum Card_Suite
-{
-    Clubs = 0,
-    Diamonds,
-    Hearts,
-    Spades
-}
-
-/// <summary>
-/// Used to define Cards' value
-/// </summary>
-public enum Card_Number
-{
-    A = 1,
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Ten,
-    Jack,
-    Queen,
-    King
-}
-
-/// <summary>
-/// Class used to define a card
+/// Class used to display a card in Game
 /// </summary>
 public class Card : MonoBehaviour
 {  

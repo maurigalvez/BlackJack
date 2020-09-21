@@ -4,3 +4,4 @@ Blackjack.sln
 Assembly-CSharp.csproj
 obj/
 Logs/
+Temp/

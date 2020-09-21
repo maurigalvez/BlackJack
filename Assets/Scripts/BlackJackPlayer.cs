@@ -14,37 +14,23 @@ public class BlackJackPlayer
         DoubleDown,
         Surrender
     }
-
-    public System.Action onHandUpdated = delegate { };
+    public System.Action<int,PlayerAction> onActionPlayed = delegate { };
     protected int m_PlayerCash = 0;
     protected int m_PlayerId = -1;
-    protected List<Card> m_Hand = null;
-    protected int m_CardsValue = 0;
+    protected BlackJackHand m_PlayerHand;
 
     public void SetPlayerId(int playerID)
     {
         m_PlayerId = playerID;
     }
 
-    public void ResetPlayerCard()
+    public BlackJackHand GetHand()
     {
-        m_Hand.Clear();
-        m_CardsValue = 0;
-    }
-
-    public void AddCardToHand(Card card)
-    {
-        m_Hand.Add(card);
-        m_CardsValue += card.GetCardValue();
-    }
-
-    public int GetHandValue()
-    {
-        return m_CardsValue;
-    }
+        return m_PlayerHand;
+    }   
 
     public void DoAction(PlayerAction pAction)
     {
-
+        onActionPlayed(m_PlayerId,pAction);
     }
 }
