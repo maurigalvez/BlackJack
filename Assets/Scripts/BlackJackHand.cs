@@ -24,6 +24,11 @@ public class BlackJackHand
         m_CardsValue = 0;
     }
 
+    public int GetCardCount()
+    {
+        return m_Hand.Count;
+    }
+
     public int GetHandValue()
     {
         return m_CardsValue;

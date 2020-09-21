@@ -34,6 +34,27 @@ public class BlackJackPlayer
         onCashUpdated(m_PlayerCash);
     }
 
+    public void AddPlayerCash(int amount)
+    {
+        m_PlayerCash += amount;
+        onCashUpdated(m_PlayerCash);
+    }
+
+    public bool IsBetSet()
+    {
+        return m_BetAmount > 0;
+    }
+
+    public void ResetBet()
+    {
+        m_BetAmount = 0;
+    }
+
+    public int GetBetAmount()
+    {
+        return m_BetAmount;
+    }
+
     public void SetBetAmount(int betAmount)
     {
         m_BetAmount = betAmount;
