@@ -68,8 +68,10 @@ public class BlackJackPlayer
 
     public void SetBetAmount(int betAmount)
     {
-        if (m_BetAmount > m_PlayerCash)
+        if (betAmount > m_PlayerCash)
+        {
             return;
+        }
         m_BetAmount = betAmount;
         onBetUpdated(m_BetAmount);
         AddPlayerCash(-m_BetAmount);

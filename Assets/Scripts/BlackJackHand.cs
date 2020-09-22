@@ -10,6 +10,7 @@ public enum HandStatus
     LOSE,
     PUSH
 }
+
 [System.Serializable]
 public class BlackJackHand 
 {

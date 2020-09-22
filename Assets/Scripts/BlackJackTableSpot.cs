@@ -75,6 +75,21 @@ public class BlackJackTableSpot : MonoBehaviour
     public void SetStatus(HandStatus status)
     {
         m_PlayerStatus.gameObject.SetActive(true);
+        Color statusColor = Color.black;
+        switch(status)
+        {
+            case HandStatus.WIN:
+                statusColor = Color.green;
+                break;
+            case HandStatus.BJ:
+                statusColor = Color.yellow;
+                break;
+            case HandStatus.LOSE:
+            case HandStatus.BUST:
+                statusColor = Color.red;
+                break;
+        }
+        m_PlayerStatus.color = statusColor;
         m_PlayerStatus.text = status.ToString();
     }
 

@@ -79,7 +79,6 @@ public class BlackJackGame : MonoBehaviour
         m_Players[m_CurrentPlayerTurn].SetBetAmount(betAmount);
     }
 
-
     public void StartNewGame()
     {
         m_DeckNumber = 1;
@@ -131,7 +130,7 @@ public class BlackJackGame : MonoBehaviour
                 m_CurrentRoutine = StartCoroutine(DealerTurn());
                 break;
             case GameState.HAND_END:
-                StartCoroutine(EndTurn());
+                m_CurrentRoutine = StartCoroutine(EndTurn());
                 break;
             case GameState.RESET:
                 ResetTable();
@@ -148,7 +147,7 @@ public class BlackJackGame : MonoBehaviour
             {
                 continue;
             }
-            m_PlayerAddMessage.text = "Enter Bet for Player" + m_TableSpots[sIndex].Occupant.GetPlayerId() + "Cash Amount";
+            m_PlayerAddMessage.text = "Enter Bet for Player " + m_TableSpots[sIndex].Occupant.GetPlayerId() + " Cash Amount";
             while (!m_TableSpots[sIndex].Occupant.IsBetSet())
             {
                 yield return null;
@@ -195,6 +194,7 @@ public class BlackJackGame : MonoBehaviour
             DealCardToSpot(m_DealerSpot);
             yield return new WaitForSeconds(2);
         }
+        m_CurrentRoutine = null;
         SetGameState(GameState.PLAYER_ACTION);
     }
 
@@ -215,6 +215,7 @@ public class BlackJackGame : MonoBehaviour
             }
             m_TableSpots[sIndex].TogglePlayerCardAction(false);
         }
+        m_CurrentRoutine = null;
         SetGameState(GameState.DEALER_ACTION);
     }
 
@@ -225,6 +226,7 @@ public class BlackJackGame : MonoBehaviour
             DealCardToSpot(m_DealerSpot);
             yield return new WaitForSeconds(2);
         }
+        m_CurrentRoutine = null;
         SetGameState(GameState.HAND_END);
     }
 
@@ -277,8 +279,9 @@ public class BlackJackGame : MonoBehaviour
                
             }
             m_TableSpots[pIndex].SetStatus(status);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(3);
         }
+        m_CurrentRoutine = null;
         SetGameState(GameState.RESET);
     }
 
