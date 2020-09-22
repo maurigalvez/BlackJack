@@ -53,7 +53,7 @@ public class CardDeck
         {
             Index = index;
             Suite = (Card_Suite)suite;
-            Number = (Card_Number)number;
+            Number = (Card_Number)number;           
         }
     }
 
@@ -68,7 +68,7 @@ public class CardDeck
         {
             for(int card= 0; card < CARDS_PER_SUITE; card++)
             {
-                m_Cards.Add(new CardDefinition((suite * 12) + card, suite, card + 1));
+                m_Cards.Add(new CardDefinition((suite * 13) + card, suite, card + 1));
             }
         }
     }
