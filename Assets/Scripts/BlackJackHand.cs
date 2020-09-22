@@ -24,6 +24,20 @@ public class BlackJackHand
         return m_IsBlackjack;
     }
 
+    public CardDeck.CardDefinition[] GetCardDefinitions()
+    {
+        if(m_Hand == null || m_Hand.Count  == 0)
+        {
+            return null;
+        }
+        CardDeck.CardDefinition[] definitions = new CardDeck.CardDefinition[m_Hand.Count];
+        for(int dIndex =0; dIndex < m_Hand.Count; dIndex++)
+        {
+            definitions[dIndex] = m_Hand[dIndex].GetCardDefinition();
+        }
+        return definitions;
+    }
+
     public void AddCardToHand(Card card)
     {
         if(m_Hand == null)

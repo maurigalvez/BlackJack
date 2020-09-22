@@ -170,7 +170,15 @@ public class BlackJackGame : MonoBehaviour
         }
         // Spawn card Display and give to player
         Card newCard = GameObject.Instantiate(m_CardPrefab, m_CardSpawnPoint.position, m_CardSpawnPoint.rotation);
-        newCard.InitializeCard(m_CardSprites[cardDefinition.Index],cardDefinition.Suite, cardDefinition.Number);
+        newCard.InitializeCard(m_CardSprites[cardDefinition.Index],cardDefinition);
+        spot.MoveCardToSpot(newCard);
+    }
+
+    private void AddCardToSpot(BlackJackTableSpot spot, CardDeck.CardDefinition definition)
+    {        
+        // Spawn card Display and give to player
+        Card newCard = GameObject.Instantiate(m_CardPrefab, m_CardSpawnPoint.position, m_CardSpawnPoint.rotation);
+        newCard.InitializeCard(m_CardSprites[definition.Index], definition);
         spot.MoveCardToSpot(newCard);
     }
 
@@ -295,5 +303,62 @@ public class BlackJackGame : MonoBehaviour
         }
         m_DealerSpot.Reset();
         SetGameState(GameState.SET_BET);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Save();
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            Load();
+        }
+    }
+
+    private void Save()
+    {
+        PlayerSave newPlayerSave = new PlayerSave();
+        newPlayerSave.BetAmount = m_Players[0].GetBetAmount();
+        newPlayerSave.CashAmount = m_Players[0].GetCashAmount();
+        newPlayerSave.DealerHand = m_DealerPlayer.GetHand().GetCardDefinitions();
+        newPlayerSave.PlayerHand = m_Players[0].GetHand().GetCardDefinitions();
+        newPlayerSave.DeckNumber = m_DeckNumber;
+        newPlayerSave.GameState = m_CurrentGameState;
+        string SaveToJson = JsonUtility.ToJson(newPlayerSave);
+        System.IO.File.WriteAllText(Application.dataPath + "/PlayerSave.json", SaveToJson);
+
+    }
+
+    private void Load()
+    {
+        if(m_CurrentGameState != GameState.SET_CASH || m_CurrentGameState != GameState.SET_BET)
+        {
+            m_NewPlayerDisplay.SetActive(false);
+            ResetTable();
+        }
+        string file = System.IO.File.ReadAllText(Application.dataPath + "/PlayerSave.json");
+        PlayerSave playerSave = JsonUtility.FromJson<PlayerSave>(file);
+        m_DeckNumber = playerSave.DeckNumber;
+        m_Players[0].SetPlayerCash(playerSave.BetAmount);
+        m_Players[0].SetPlayerCash(playerSave.CashAmount);
+        // add player hand
+        if (playerSave.PlayerHand != null)
+        {
+            for (int cIndex = 0; cIndex < playerSave.PlayerHand.Length; cIndex++)
+            {
+                AddCardToSpot(m_TableSpots[0], playerSave.PlayerHand[cIndex]);
+            }
+        }
+        // add dealer hand
+        if (playerSave.DealerHand != null)
+        {
+            for (int cIndex = 0; cIndex < playerSave.DealerHand.Length; cIndex++)
+            {
+                AddCardToSpot(m_DealerSpot, playerSave.DealerHand[cIndex]);
+            }
+        }
+        SetGameState(playerSave.GameState);
     }
 }

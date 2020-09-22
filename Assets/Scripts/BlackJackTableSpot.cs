@@ -56,27 +56,27 @@ public class BlackJackTableSpot : MonoBehaviour
         m_SpotOccupant.onBetUpdated += RefreshBetAmount;
         m_SpotOccupant.onCashUpdated += RefreshCashAmount;
         m_SpotOccupant.GetHand().onHandUpdated += RefreshHandValue;
-        if(m_HitButton)
+        if (m_HitButton)
             m_HitButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Hit));
-        if(m_StandButton)
+        if (m_StandButton)
             m_StandButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Stand));
-        if(m_DoubleDownButton)
+        if (m_DoubleDownButton)
             m_DoubleDownButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.DoubleDown));
-        if(m_Surrender)
+        if (m_Surrender)
             m_Surrender.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Surrender));
     }
 
     public void Reset()
     {
         m_PlayerStatus.gameObject.SetActive(false);
-        m_SpotOccupant.Reset();  
+        m_SpotOccupant.Reset();
     }
 
     public void SetStatus(HandStatus status)
     {
         m_PlayerStatus.gameObject.SetActive(true);
         Color statusColor = Color.black;
-        switch(status)
+        switch (status)
         {
             case HandStatus.WIN:
                 statusColor = Color.green;
@@ -104,9 +104,9 @@ public class BlackJackTableSpot : MonoBehaviour
     /// </summary>
     public void MoveCardToSpot(Card card)
     {
-        int handCount = m_SpotOccupant.GetHand().GetCardCount();   
+        int handCount = m_SpotOccupant.GetHand().GetCardCount();
         card.transform.SetParent(m_CardPivotPoint);
-        StartCoroutine(MoveCardRoutine(card.transform, m_CardOffset* handCount));
+        StartCoroutine(MoveCardRoutine(card.transform, m_CardOffset * handCount));
         m_SpotOccupant.GetHand().AddCardToHand(card);
     }
 
@@ -115,9 +115,9 @@ public class BlackJackTableSpot : MonoBehaviour
         Vector3 cardStartPos = cardTransform.localPosition;
         Quaternion cardStartRot = cardTransform.localRotation;
         Vector3 endPosition = offset;
-        for(float t = 0; t < 1; t += Time.deltaTime)
-        { 
-            cardTransform.localPosition = Vector3.Lerp(cardStartPos, endPosition,t);
+        for (float t = 0; t < 1; t += Time.deltaTime)
+        {
+            cardTransform.localPosition = Vector3.Lerp(cardStartPos, endPosition, t);
             cardTransform.localRotation = Quaternion.Lerp(cardStartRot, Quaternion.identity, t);
             yield return null;
         }
@@ -132,7 +132,7 @@ public class BlackJackTableSpot : MonoBehaviour
     {
         m_PlayerBetAmount.text = "$" + betAmount.ToString("N0");
     }
-    
+
     /// <summary>
     /// Refresh hand value on UI
     /// </summary>

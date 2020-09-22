@@ -8,25 +8,28 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
     [SerializeField] private Image m_CardSpriteDisplay = null;
-    private Card_Suite m_CardSuit;
-    private Card_Number m_CardNumber;
+    private CardDeck.CardDefinition m_CardDefinition;
 
-    public void InitializeCard(Sprite cardSprite, Card_Suite suite, Card_Number number)
+    public void InitializeCard(Sprite cardSprite, CardDeck.CardDefinition cardDefinition)
     {
         // select random suit
-        m_CardSpriteDisplay.sprite = cardSprite;
-        m_CardSuit = suite;
-        m_CardNumber = number;
+        m_CardDefinition = cardDefinition;
+        m_CardSpriteDisplay.sprite = cardSprite; 
+    }
+
+    public CardDeck.CardDefinition GetCardDefinition()
+    {
+        return m_CardDefinition;
     }
 
     public Card_Suite GetCardSuit()
     {
-        return m_CardSuit;
+        return m_CardDefinition.Suite;
     }
 
     public int GetCardValue()
     {
-        switch(m_CardNumber)
+        switch(m_CardDefinition.Number)
         {
             case Card_Number.A:
                 return 11;
@@ -37,7 +40,7 @@ public class Card : MonoBehaviour
                 return 10;
 
              default:
-                return (int)m_CardNumber;
+                return (int)m_CardDefinition.Number;
         }
     }
 

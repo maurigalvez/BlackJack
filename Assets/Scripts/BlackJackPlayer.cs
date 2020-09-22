@@ -51,6 +51,11 @@ public class BlackJackPlayer
         onCashUpdated(m_PlayerCash);
     }
 
+    public int GetCashAmount()
+    {
+        return m_PlayerCash;
+    }
+
     public bool IsBetSet()
     {
         return m_BetAmount > 0;
