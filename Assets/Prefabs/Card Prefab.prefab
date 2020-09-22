@@ -87,4 +87,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124f84e9e4a8318429c5b0c2729aa320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CardSpriteDisplay: {fileID: 0}
+  m_CardSpriteDisplay: {fileID: 8309714638593709000}

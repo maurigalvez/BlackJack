@@ -32,8 +32,6 @@ public class BlackJackGame : MonoBehaviour
     [SerializeField] private GameObject m_NewPlayerDisplay = null;
     [SerializeField] private Text m_PlayerAddMessage;
     [SerializeField] private InputField m_PlayerCashStart;
-    [Header("Bet Amount")]
-    [SerializeField] private RectTransform m_BetDisplayPoints;
 
     private CardDeck m_CurrentDeck = new CardDeck();
     private int m_NumberOfDecks = 8;
@@ -177,6 +175,7 @@ public class BlackJackGame : MonoBehaviour
             }
             cardsDealt++;
             DealCardToSpot(m_DealerSpot);
+            yield return new WaitForSeconds(2);
         }
     }
 }

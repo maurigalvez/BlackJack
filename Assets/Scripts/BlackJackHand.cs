@@ -16,16 +16,22 @@ public class BlackJackHand
         }
         m_Hand.Add(card);
         m_CardsValue += card.GetCardValue();
+        onHandUpdated();
     }
 
     public void ResetHand()
     {
         m_Hand.Clear();
         m_CardsValue = 0;
+        onHandUpdated();
     }
 
     public int GetCardCount()
     {
+        if (m_Hand == null)
+        {
+            return 0;
+        }
         return m_Hand.Count;
     }
 
