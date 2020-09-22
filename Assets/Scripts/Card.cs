@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 /// <summary>
 /// Class used to display a card in Game
 /// </summary>
 public class Card : MonoBehaviour
-{  
+{
+    [SerializeField] private Image m_CardSpriteDisplay = null;
     private Card_Suite m_CardSuit;
     private Card_Number m_CardNumber;
 
-    public void InitializeCard(Card_Suite suite, Card_Number number)
+    public void InitializeCard(Sprite cardSprite, Card_Suite suite, Card_Number number)
     {
         // select random suit
+        m_CardSpriteDisplay.sprite = cardSprite;
         m_CardSuit = suite;
         m_CardNumber = number;
     }

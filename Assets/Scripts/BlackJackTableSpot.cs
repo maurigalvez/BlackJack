@@ -26,6 +26,14 @@ public class BlackJackTableSpot : MonoBehaviour
     private Color m_PushStatus = Color.white;
 
     /// <summary>
+    /// Get current occupant
+    /// </summary>
+    public BlackJackPlayer Occupant
+    {
+        get { return m_SpotOccupant; }
+    }
+
+    /// <summary>
     /// Get Whether this spot is occupied or not
     /// </summary>
     /// <returns></returns>
@@ -41,10 +49,10 @@ public class BlackJackTableSpot : MonoBehaviour
     {
         m_SpotOccupant = occupant;
         m_SpotOccupant.GetHand().onHandUpdated += RefreshHandValue;
-        m_HitButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Hit));
+        /*m_HitButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Hit));
         m_StandButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Stand));
         m_DoubleDownButton.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.DoubleDown));
-        m_Surrender.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Surrender));
+        m_Surrender.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Surrender));*/
     }
 
     /// <summary>

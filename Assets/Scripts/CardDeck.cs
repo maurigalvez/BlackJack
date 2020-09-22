@@ -47,9 +47,11 @@ public class CardDeck
     {
         public Card_Number Number;
         public Card_Suite Suite;
+        public int Index;
 
-        public CardDefinition(int suite, int number)
+        public CardDefinition(int index, int suite, int number)
         {
+            Index = index;
             Suite = (Card_Suite)suite;
             Number = (Card_Number)number;
         }
@@ -62,11 +64,11 @@ public class CardDeck
     public void Initialize()
     {
         m_Cards = new List<CardDefinition>();
-        for(int suite =0; suite < SUITE_NUMBER; suite++)
+        for(int suite = 0; suite < SUITE_NUMBER; suite++)
         {
-            for(int card= 1; card <= CARDS_PER_SUITE; card++)
+            for(int card= 0; card < CARDS_PER_SUITE; card++)
             {
-                m_Cards.Add(new CardDefinition(suite, card));
+                m_Cards.Add(new CardDefinition((suite * 12) + card, suite, card + 1));
             }
         }
     }

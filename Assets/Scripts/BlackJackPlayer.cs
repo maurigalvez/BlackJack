@@ -21,7 +21,12 @@ public class BlackJackPlayer
     protected int m_PlayerCash = 0;
     protected int m_BetAmount = 0;
     protected int m_PlayerId = -1;
-    protected BlackJackHand m_PlayerHand;
+    protected BlackJackHand m_PlayerHand = new BlackJackHand();
+
+    public int GetPlayerId()
+    {
+        return m_PlayerId;
+    }
 
     public void SetPlayerId(int playerID)
     {

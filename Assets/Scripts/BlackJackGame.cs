@@ -13,6 +13,7 @@ public class BlackJackGame : MonoBehaviour
     public enum GameState
     {
         NONE = 0,
+        SET_CASH,
         SET_BET,
         DEAL_CARDS,
         PLAYER_ACTION,
@@ -22,6 +23,8 @@ public class BlackJackGame : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private Card m_CardPrefab;
     [SerializeField] private Transform m_CardSpawnPoint = null;
+    [SerializeField] private Sprite m_BackSideSprite;
+    [SerializeField] private Sprite[] m_CardSprites;
     [Header("Table Setup")]
     [SerializeField] private BlackJackTableSpot m_DealerSpot;
     [SerializeField] private BlackJackTableSpot[] m_TableSpots;
@@ -35,23 +38,48 @@ public class BlackJackGame : MonoBehaviour
     private CardDeck m_CurrentDeck = new CardDeck();
     private int m_NumberOfDecks = 8;
     private List<BlackJackPlayer> m_Players = new List<BlackJackPlayer>();
-    private BlackJackDealer m_DealerPlayer = new BlackJackDealer();
+    private BlackJackDealer m_DealerPlayer;
     private int m_CurrentPlayerTurn = 0;
     private int m_DeckNumber = 1;
     private Coroutine m_CurrentRoutine = null;
     private List<Card> m_InstantiatedCards = new List<Card>();
+    private GameState m_CurrentGameState = GameState.NONE;
 
     private void Start()
     {
+        m_DealerPlayer = new BlackJackDealer();
         m_DealerSpot.SetSpotOccupant(m_DealerPlayer);
         AddNewPlayer(0);
+        SetGameState(GameState.SET_CASH);
+        // Get Player Cash Amount
+        m_NewPlayerDisplay.SetActive(true);
+        m_PlayerAddMessage.text = "Set Initial Cash Amount";    
     }
 
-    public void SetPlayerCashAmount(int cashAmount)
+    public void ReadInputAmount()
     {
-        m_Players[0].SetPlayerCash(cashAmount);
+        switch(m_CurrentGameState)
+        {
+            case GameState.SET_CASH:
+                SetPlayerCashAmount(0, int.Parse(m_PlayerCashStart.text));
+                break;
+            case GameState.SET_BET:
+                SetBetForCurrentPlayer(int.Parse(m_PlayerCashStart.text));
+                break;
+        }
+    }
+
+    private void SetPlayerCashAmount(int playerIndex, int cashAmount)
+    {
+        m_Players[playerIndex].SetPlayerCash(cashAmount);
         SetGameState(GameState.SET_BET);
     }
+
+    private void SetBetForCurrentPlayer(int betAmount)
+    {
+        m_Players[m_CurrentPlayerTurn].SetBetAmount(betAmount);
+    }
+
 
     public void StartNewGame()
     {
@@ -75,12 +103,15 @@ public class BlackJackGame : MonoBehaviour
 
     private void SetGameState(GameState state)
     {
+        m_CurrentGameState = state;
         switch(state)
         {
             case GameState.SET_BET:
+                m_NewPlayerDisplay.SetActive(true);             
                 m_CurrentRoutine = StartCoroutine(SetBet());
                 break;
             case GameState.DEAL_CARDS:
+                m_NewPlayerDisplay.SetActive(false);
                 m_CurrentRoutine = StartCoroutine(DealCards());
                 break;
             case GameState.PLAYER_ACTION:
@@ -92,26 +123,28 @@ public class BlackJackGame : MonoBehaviour
         }
     }
 
-    public void SetBetForCurrentPlayer(int betAmount)
-    {
-        m_Players[m_CurrentPlayerTurn].SetBetAmount(betAmount);
-    }
-
     private IEnumerator SetBet()
     {
-        for(m_CurrentPlayerTurn = 0; m_CurrentPlayerTurn < m_Players.Count; m_CurrentPlayerTurn++)
+        Debug.Log("Betting Turn");
+        for(int sIndex = 0; sIndex < m_TableSpots.Length; sIndex++)
         {
-            while(!m_Players[m_CurrentPlayerTurn].IsBetSet())
+            if(!m_TableSpots[sIndex].IsOccupied())
+            {
+                continue;
+            }
+            m_PlayerAddMessage.text = "Enter Bet for Player" + m_TableSpots[sIndex].Occupant.GetPlayerId() + "Cash Amount";
+            while (!m_TableSpots[sIndex].Occupant.IsBetSet())
             {
                 yield return null;
             }
         }
         m_CurrentRoutine = null;
-        SetGameState(GameState.DEAL_CARDS);
+        StartNewGame();
     }
 
     private void DealCardToSpot(BlackJackTableSpot spot)
     {
+        Debug.Log("Dealing Cards");
         // get card definition
         CardDeck.CardDefinition cardDefinition = m_CurrentDeck.GetCardDefinition();
         if(cardDefinition == null && m_DeckNumber < m_NumberOfDecks)
@@ -122,7 +155,7 @@ public class BlackJackGame : MonoBehaviour
         }
         // Spawn card Display and give to player
         Card newCard = GameObject.Instantiate(m_CardPrefab, m_CardSpawnPoint.position, m_CardSpawnPoint.rotation);
-        newCard.InitializeCard(cardDefinition.Suite, cardDefinition.Number);
+        newCard.InitializeCard(m_CardSprites[cardDefinition.Index],cardDefinition.Suite, cardDefinition.Number);
         spot.MoveCardToSpot(newCard);
     }
 
