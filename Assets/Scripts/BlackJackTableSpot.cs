@@ -66,6 +66,25 @@ public class BlackJackTableSpot : MonoBehaviour
             m_Surrender.onClick.AddListener(() => m_SpotOccupant.DoAction(BlackJackPlayer.PlayerAction.Surrender));
     }
 
+    public void Reset()
+    {
+        m_PlayerStatus.gameObject.SetActive(false);
+        m_SpotOccupant.ResetBet();
+        m_SpotOccupant.GetHand().ResetHand();
+    }
+
+    public void SetStatus(HandStatus status)
+    {
+        m_PlayerStatus.gameObject.SetActive(true);
+        m_PlayerStatus.text = status.ToString();
+    }
+
+    public void TogglePlayerCardAction(bool isEnabled)
+    {
+        m_HitButton.gameObject.SetActive(isEnabled);
+        m_StandButton.gameObject.SetActive(isEnabled);
+    }
+
     /// <summary>
     /// Move Card To Hand
     /// </summary>

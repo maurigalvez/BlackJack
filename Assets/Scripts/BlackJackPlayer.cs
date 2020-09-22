@@ -17,11 +17,17 @@ public class BlackJackPlayer
     public System.Action<int,PlayerAction> onActionPlayed = delegate { };
     public System.Action<int> onCashUpdated = delegate { };
     public System.Action<int> onBetUpdated = delegate { };
-
+ 
     protected int m_PlayerCash = 0;
     protected int m_BetAmount = 0;
     protected int m_PlayerId = -1;
     protected BlackJackHand m_PlayerHand = new BlackJackHand();
+    protected bool m_HasStanded = false;
+
+    public bool Standed()
+    {
+        return m_HasStanded;
+    }
 
     public int GetPlayerId()
     {
@@ -62,8 +68,11 @@ public class BlackJackPlayer
 
     public void SetBetAmount(int betAmount)
     {
+        if (m_BetAmount > m_PlayerCash)
+            return;
         m_BetAmount = betAmount;
         onBetUpdated(m_BetAmount);
+        AddPlayerCash(-m_BetAmount);
     }
 
     public BlackJackHand GetHand()
@@ -73,6 +82,12 @@ public class BlackJackPlayer
 
     public void DoAction(PlayerAction pAction)
     {
-        onActionPlayed(m_PlayerId,pAction);
+        switch(pAction)
+        {
+            case PlayerAction.Stand:
+                m_HasStanded = true;
+                break;
+        }
+        onActionPlayed(m_PlayerId, pAction);
     }
 }
