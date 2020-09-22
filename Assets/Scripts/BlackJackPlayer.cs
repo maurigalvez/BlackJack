@@ -80,6 +80,13 @@ public class BlackJackPlayer
         return m_PlayerHand;
     }   
 
+    public void Reset()
+    {
+        GetHand().ResetHand();
+        ResetBet();
+        m_HasStanded = false;
+    }
+
     public void DoAction(PlayerAction pAction)
     {
         switch(pAction)

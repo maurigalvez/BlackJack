@@ -90,6 +90,7 @@ public class BlackJackGame : MonoBehaviour
     public void AddNewPlayer(int spotIndex)
     {
         BlackJackPlayer newPlayer = new BlackJackPlayer();
+        newPlayer.onActionPlayed += OnPlayerAction;
         newPlayer.SetPlayerId(spotIndex);
         m_Players.Add(newPlayer);
         m_TableSpots[spotIndex].SetSpotOccupant(newPlayer);
@@ -130,7 +131,10 @@ public class BlackJackGame : MonoBehaviour
                 m_CurrentRoutine = StartCoroutine(DealerTurn());
                 break;
             case GameState.HAND_END:
-                EndTurn();
+                StartCoroutine(EndTurn());
+                break;
+            case GameState.RESET:
+                ResetTable();
                 break;
         }
     }
@@ -218,12 +222,13 @@ public class BlackJackGame : MonoBehaviour
     {
         while(m_DealerPlayer.GetHand().GetHandValue() < 16)
         {
-            yield return null;
+            DealCardToSpot(m_DealerSpot);
+            yield return new WaitForSeconds(2);
         }
         SetGameState(GameState.HAND_END);
     }
 
-    private void EndTurn()
+    private IEnumerator EndTurn()
     {
         int dealerCardValue = m_DealerPlayer.GetHand().GetHandValue();
         HandStatus status = HandStatus.NONE;
@@ -272,7 +277,9 @@ public class BlackJackGame : MonoBehaviour
                
             }
             m_TableSpots[pIndex].SetStatus(status);
+            yield return new WaitForSeconds(2);
         }
+        SetGameState(GameState.RESET);
     }
 
     private void ResetTable()
@@ -284,5 +291,6 @@ public class BlackJackGame : MonoBehaviour
             m_TableSpots[pIndex].Reset();
         }
         m_DealerSpot.Reset();
+        SetGameState(GameState.SET_BET);
     }
 }

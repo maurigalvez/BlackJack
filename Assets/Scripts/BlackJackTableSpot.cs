@@ -69,8 +69,7 @@ public class BlackJackTableSpot : MonoBehaviour
     public void Reset()
     {
         m_PlayerStatus.gameObject.SetActive(false);
-        m_SpotOccupant.ResetBet();
-        m_SpotOccupant.GetHand().ResetHand();
+        m_SpotOccupant.Reset();  
     }
 
     public void SetStatus(HandStatus status)
